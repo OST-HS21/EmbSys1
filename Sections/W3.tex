@@ -1,0 +1,115 @@
+\section{Clock System}
+\subsection{Clock Sources \refskript{6.3}}
+Voltage Swing $V_{SW} = V_{OH} - V_{OL}$ : Amplitude from low to high.\\
+Frequency $f_{clk} = \dfrac{1}{T_{clk}}$ : Number of cycles per second\\
+Duty Cycle $DC = \dfrac{t_{high}}{T_{clk}} * 100 \%$ : Ratio of high time to period\\
+Edge Speed $t$ and $t_f$ : Rising and falling times
+
+\includegraphics[width=\columnwidth]{"clock"}
+
+\subsection{Clock Stability \refskript{6.3.1}}
+Statistical measure of the maximum allowable parameter fluctuations of a clock signal
+over a given time interval.
+
+\begin{minipage}[t]{0.5\columnwidth}
+	Possible factors:
+	\begin{itemize}
+		\itemsep-.5em 
+		\item type of oscillator
+		\item capacitive load
+		\item ageing
+		\item supply voltage or temperature
+	\end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.5\columnwidth}
+	Short- and long-term effects:
+	\begin{itemize}
+		\itemsep-.5em 
+		\item Clock Jitter
+		\item Clock Drift
+	\end{itemize}
+\end{minipage}
+\vspace{2mm}
+
+\subsection{Source Selection \refskript{6.3.2}}
+Choose the lowest frequency that allows for a reliable and correct system operation.
+Adjust the frequency to the speed of the fastest event.
+
+
+\subsection{Internal vs. External Clock \refskript{6.3.3}}
+
+\begin{minipage}[t]{0.5\columnwidth}
+	\textbf{Internal}
+	
+	Pro:
+	\begin{itemize}
+		\itemsep-.5em 
+		\item Reduce external component count
+		\item Less expensive
+		\item Induce lower power consumption
+	\end{itemize}
+	Con:
+	\begin{itemize}
+		\itemsep-.5em 
+		\item Reduced clock stability
+		\item Less flexibility
+		\item Narrower bandwidth
+	\end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.5\columnwidth}
+	\textbf{External}
+	
+	Pro:
+	\begin{itemize}
+		\itemsep-.5em 
+		\item Wider choice of frequencies
+		\item More design flexibility
+	\end{itemize}
+	Con:
+	\begin{itemize}
+		\itemsep-.5em 
+		\item Increment the external component count
+		\item Higher clock speeds induce higher power
+		consumption
+	\end{itemize}
+\end{minipage}
+\vspace{2mm}
+
+\subsection{RC-based Oscillator}
+\includegraphics[width=0.7\columnwidth, center]{"rcbased_oscillator"}
+
+\subsection{Quartz Crystal Oscillators \refskript{6.3.4}}
+Based on mechanical resonance of a vibrating piezoelectric crystal.
+
+\subsection{Pierce Crystal Oscillator \refskript{6.3.4}}
+Series Resonant Oscillator
+
+\subsection{Colpitts Crystal Oscillator \refskript{6.3.4}}
+Parallel Resonant Oscillator
+
+\subsection{Oscillator Startup Time \refskript{6.3.4}}
+
+\section{The MSP430 System Clock \refskript{6.4}}
+\includegraphics[width=0.7\columnwidth, center]{"MSP430clocksystem"}
+
+\subsection{DCO Clock}
+Digitally controlled oscillator
+\begin{enumerate}
+	\itemsep-.5em 
+	\item Select a frequency range (DCORSEL)
+	\item Select the frequency within that range (DCO)
+	\item Setup Modulation (MOD)
+\end{enumerate}
+\includegraphics[width=0.5\columnwidth]{"DCOwide"}
+\includegraphics[width=0.5\columnwidth]{"DCOnarrow"}
+
+\includegraphics[width=0.5\columnwidth]{"DCOmod1"}
+\includegraphics[width=0.5\columnwidth]{"DCOmod2"}
+
+
+
+
+
+
+
+

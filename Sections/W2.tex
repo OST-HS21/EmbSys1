@@ -1,0 +1,61 @@
+\section{Interrupt Concepts \refskript{7.1, 7.2}}
+A Interrupt is a signal indicating the occurrence of an event that needs immediate CPU attention.
+There exist different types of Interrupts:
+\begin{itemize}
+	\itemsep-.5em 
+	\item Hardware triggers
+	\item Software triggers
+	\item CPU exceptions
+\end{itemize}
+
+\begin{lstlisting}[language=c]
+PxDIR &= ~0x01;	// Set Px.0 as input
+PxDIR |= 0x02;	// Set Px.1 as output
+PxOUT &= ~0x02;	// Clear LED on Px.1
+PxIE |= 0x01;	// IRQ when SW1 is pressed
+...
+__interrupt void portx_ISR(void)
+{
+	PxOUT ^=  0x02;
+}
+\end{lstlisting}
+
+\subsection{Maskabe vs. Nonmaskable \refskript{7.1.2}}
+\includegraphics[width=\columnwidth]{"Statusregister"}
+\textit{Maksable}: Can be blocked (masked), trough flags.
+
+\textit{Non-maskable} interrupts (NMI):
+\begin{itemize}
+	\itemsep-.5em 
+	\item Cannot be masked, thus are always served
+	\item Reserved for system critical events
+\end{itemize}
+
+\subsubsection{Interrupt Flow}
+\includegraphics[width=.6\columnwidth, center]{"InterruptFlow"}
+
+Interrupt kann über intrinsische Funktionen eingestellt werden.
+Alternativ mit enable\_interrupt() funktion.
+
+
+\subsubsection{Interrupt Service Sequence \refskript{7.1.3}}
+PC speicher den aktuellen ort im code bevor der Interrupt ausgeführ wird.
+SR wird auf dem stack gespeichert
+
+\subsubsection{Interrupt Identification Methods \refskript{7.1.4}}
+\textit{Non-vectored systems (1)} dont know, what triggerd the interrupt and have to identifa the interrupt sourth within the ISR.
+
+\textit{Vectored interrupts (2)} Have a ID for each interrupt type an can jump directly to the desired ISR.
+
+\textit{Auto-vectored interrupts (3)} have predefined addresses / fix vectors for the different interrupts.
+
+\subsubsection{Interrupt Priority Handling \refskript{7.1.5}}
+(1) \textit{Polling order of SRQ flags} decides priority (if else if define the interrupt priority)
+
+(2) \textit{Daisy Chain-based Arbitration} defines the priority through hardwired logic. Used by the MSP430.
+
+(3) \textit{Interrupt controller-based Arbitration} allows priority configuration by the user. 
+
+\subsection{Interrupt Software Design \refskript{7.3}}
+
+

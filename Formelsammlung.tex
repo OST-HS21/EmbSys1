@@ -1,0 +1,78 @@
+\documentclass[10pt,a4paper,twoside,openright,titlepage,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{wrapfig}
+\usepackage{siunitx}
+\usepackage{titlesec}
+\usepackage{titlepic}
+\usepackage[export]{adjustbox}
+\usepackage[left=6.00mm, right=6.00mm, top=6.00mm, bottom=12.00mm]{geometry}
+\usepackage{listings}
+
+\graphicspath{ {./Images/} }
+
+\definecolor{formulablue}{RGB}{219,219,255}
+\newcommand{\formula}[1]{\colorbox{formulablue}{#1}}
+
+\newcommand{\unitText}[3]{\noindent\textit{#1} : #2 [#3]}
+
+\definecolor{refrot}{RGB}{183,28,42}
+\definecolor{LightGray}{gray}{0.9}
+\definecolor{ForestGreen}{RGB}{34,139,34}
+\newcommand{\refskript}[1]{\textcolor{refrot}{#1}}
+\newcommand{\refskriptP}[1]{\textcolor{refrot}{Skript S.#1}}
+
+% Setup Source Code
+\lstset{ 
+	backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\color{ForestGreen},    % comment style
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	frame=single,	                   % adds a frame around the code
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	language=C,                      % the language of the code
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+	title=\lstname,                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+	stringstyle=\ttfamily\color{red!50!brown},
+	keywordstyle=\color{blue}\bfseries,
+	literate={~} {$\sim$}{1}
+}
+
+\setlength{\parindent}{0pt}
+
+\titlespacing*{\section}{0pt}{12pt}{0pt}
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
+
+\title{\vspace{50mm}SigSys2 \\ [1ex] \large Formelsammlung}
+\author{Sebastian Humbel}
+\titlepic{\vspace{50mm}\includegraphics[width=0.25\textwidth]{Elvis}}
+
+
+
+
+\begin{document}
+	\maketitle
+	%\input{Sections/Section1}
+	\input{Sections/W1}
+	\input{Sections/W2}
+	\input{Sections/W3}
+	\input{Sections/W4}
+	\input{Sections/W5}
+\end{document}
+
+
