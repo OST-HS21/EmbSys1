@@ -10,26 +10,22 @@ There exist different types of Interrupts:
 
 \begin{lstlisting}[language=c]
 PxDIR &= ~0x01;	// Set Px.0 as input
-PxDIR |= 0x02;	// Set Px.1 as output
+PxDIR |=  0x02;	// Set Px.1 as output
 PxOUT &= ~0x02;	// Clear LED on Px.1
-PxIE |= 0x01;	// IRQ when SW1 is pressed
+PxIE  |=  0x01;	// IRQ when SW1 is pressed
 ...
-__interrupt void portx_ISR(void)
-{
+__interrupt void portx_ISR(void) {
 	PxOUT ^=  0x02;
 }
-\end{lstlisting}
+\end{lstlisting}\vspace{-25px}
 
 \subsection{Maskabe vs. Nonmaskable \refskript{7.1.2}}
-\includegraphics[width=\columnwidth]{"Statusregister"}
-\textit{Maksable}: Can be blocked (masked), trough flags.
+\textit{Maksable}: Can be blocked (masked), trough flags. Most common type of interrupt. Disabled upon RESET.
 
-\textit{Non-maskable} interrupts (NMI):
-\begin{itemize}
-	\itemsep-.5em 
-	\item Cannot be masked, thus are always served
-	\item Reserved for system critical events
-\end{itemize}
+\textit{Non-maskable} interrupts (NMI): Cannot be masked, thus are always served. Reserved for system critical events
+
+Also see \refskript{7.2.2} and \refskript{7.2.3}
+
 
 \subsubsection{Interrupt Flow}
 \includegraphics[width=.6\columnwidth, center]{"InterruptFlow"}
@@ -43,9 +39,9 @@ PC speicher den aktuellen ort im code bevor der Interrupt ausgeführ wird.
 SR wird auf dem stack gespeichert
 
 \subsubsection{Interrupt Identification Methods \refskript{7.1.4}}
-\textit{Non-vectored systems (1)} dont know, what triggerd the interrupt and have to identifa the interrupt sourth within the ISR.
+\textit{Non-vectored systems (1)} don't know, what triggered the interrupt and have to identify the interrupt source within the ISR.
 
-\textit{Vectored interrupts (2)} Have a ID for each interrupt type an can jump directly to the desired ISR.
+\textit{Vectored interrupts (2)} Have an ID for each interrupt type an can jump directly to the desired ISR.
 
 \textit{Auto-vectored interrupts (3)} have predefined addresses / fix vectors for the different interrupts.
 
@@ -54,8 +50,41 @@ SR wird auf dem stack gespeichert
 
 (2) \textit{Daisy Chain-based Arbitration} defines the priority through hardwired logic. Used by the MSP430.
 
-(3) \textit{Interrupt controller-based Arbitration} allows priority configuration by the user. 
+(3) \textit{Interrupt controller-based Arbitration} allows priority configuration by the user.
 
 \subsection{Interrupt Software Design \refskript{7.3}}
+\begin{lstlisting}[language=c]
+// main.c
+int main(void){
+	hal_gpio_init();
+	hal_gpio_interruptCallbackFctRegister(
+					GPIO_S1,_s1_callbackFct);
+}
+
+static void _s1_callbackFct(void){
+	...
+}
+\end{lstlisting}\vspace{-25px}
+\begin{lstlisting}[language=c]
+// hal_gpio.h
+void hal_gpio_init(void);
+void hal_gpio_interruptCallbackFctRegister(
+			gpioPeripherie_t gpio, pFctHandler pCallbackFct);
+\end{lstlisting}\vspace{-25px}
+\begin{lstlisting}[language=c]
+// hal_gpio.c
+void hal_gpio_init(void) { // ... }
+void hal_gpio_interruptCallbackFctRegister(
+		gpioPeripherie_t gpio, pFctHandler pCallbackFct) {
+			_hal_gpio_callbackFct[0] = pCallbackFct;
+}
+
+#pragma vector=PORT1_VECTOR
+__interrupt void _port1_ISR(void) {
+	// ...
+	_hal_gpio_callbackFct[0](); // call back application code
+}
+\end{lstlisting}\vspace{-25px}
+
 
 
