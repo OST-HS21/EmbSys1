@@ -1,7 +1,7 @@
-\subsubsection{UART}
+\subsubsection{UART \refskript{9.3.4}}
 \begin{itemize}
 	\itemsep-.5em
-	\item Handshaking Lines
+	\item Handshaking Lines \refskript{9.3.6}
 	\begin{itemize}
 		\itemsep-.5em 
 		\item \textbf{DSR} Data Set Ready
@@ -17,8 +17,14 @@
 	\end{itemize}
 \end{itemize}
 
+UART configuration \refskript{9.3.7}
+
+
+\subsubsection{Baud rate}
+Bit rate: Bits per second\\
+Baud rate: Symbols per second
+
 \subsubsection{RS-232 \refskript{9.3.8}}
-\includegraphics[width=.4\columnwidth]{"Images/RS232Connector.png"}
 Point to point connection.
 The transfer-speed is highly dependent on the transmission line length.
 
@@ -27,3 +33,38 @@ Bus connection with a maximum of 10 receivers (more with repeaters or buffers).
 
 \subsection{Ring Buffer}
 A ring buffers works with the FIFO principle.
+
+\begin{lstlisting}[language=C]
+// --- Defines
+#define _UART_RX_BUF_BITS 5 // Buffer Size: 2^n
+#define _UART_RX_BUF_SIZE (0x0001 << _UART_RX_BUF_BITS)
+#define _UART_RX_BUF_MASK (_UART_RX_BUF_SIZE - 1)
+	
+// --- Variables
+volatile struct { // RX Circular buffer
+	uint8_t buf[_UART_RX_BUF_SIZE];
+	uint16_t in;
+	uint16_t out;
+} rxBuffer;
+
+uint8_t hal_uart_rxChar(uint8_t *const pdataRx) {
+	uint8_t nrOfChar = 0x00;
+	
+	UCA0IE &= ~0x0001; // temporary disable Rx-ISR
+	// check rx-Buffer state
+	if (rxBuffer.in == rxBuffer.out) {
+		// rx-Buffer is empty
+		UCA0IE |= 0x0001;	// enable Rx-ISR
+		nrOfChar = 0x00;
+	} else { // rx-Buffer contains data
+		// get Character from rx-Buffer
+		*pdataRx = rxBuffer.buf[rxBuffer.out++];
+		// wrap-around index
+		rxBuffer.out &= _UART_RX_BUF_MASK;
+		
+		UCA0IE |= 0x0001; // enable Rx-ISR
+		nrOfChar = 0x01;
+	}
+	return nrOfChar;
+}
+\end{lstlisting}
