@@ -1,1 +1,19 @@
-\subsection{title}
+\section{The Analog Signal Chain \refskript{10}}
+\subsection{OpAmp \refskript{10.4}}
+\subsection{Sampling and Quantization \refskript{10.7}}
+\formula{$f_s \geq 2 \cdot f_H = f_n$}\\
+\unitText{$f_s$}{Sampling Frequency}{Hz}\\
+\unitText{$f_s$}{Highest Frequency}{Hz}
+
+\subsubsection{Aliasing \refskript{10.7.2}}
+\formula{$k \cdot f_s \pm f$}
+
+Can be solved using a low-pass or band-pass filter.
+
+\subsection{Quantization}
+\formula{$\text{Quantization error} = \text{actual value} - \text{quantization level}$}\\
+Full scale range: \formula{$V_{FS} = V_{max} - V_{min}$}\\
+Resolution, precision: \formula{$\Delta = \dfrac{V_{max} - V_{min}}{2^n} = \dfrac{V_{FS}}{2^n} = \text{LSB resolution}$}\\
+
+\subsection{Digital-to-Analog Converters \refskript{10.8}}
+\subsection{Analog-to-Digital Converters \refskript{10.9}}
