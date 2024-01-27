@@ -1,0 +1,26 @@
+\section{Bus Arbitration and DMA \refskript{7.6}}
+The \textbf{Bus Master} controls the System Bus Address, Data \& Control buses. The CPU is default bus master.
+
+The \textbf{Bus Arbitration Process} allows a bus master capable devices request and gain control of system buses.
+E.g. DMA controllers, GPUs, Math Co-processors etc..
+
+\subsection{DMA \refskript{7.6.2}}
+For Conventional I/O to Memory Data Transfer see \refskript{Figure 9.35}.
+For DMA – Direct Memory Access, see \refskript{Figure 7.36}.
+DMA enables Direct Transfers without CPU Intervention.
+E.g. \textbf{I/O peripheral to memory transfers}, \textbf{Memory to I/O peripheral transfers}, \textbf{Memory to memory transfers} or \textbf{I/O peripheral to I/O peripheral} transfers.
+
+Modes:
+\begin{itemize}
+	\itemsep-.5em
+	\item Burst: transferred with a single bus arbitration transaction
+	\item Cycle Stealing: A bus arbitration transaction mediates per transfer
+	\item Interleaving/Transparent: DMA detects CPU inactivity to perform transfers
+\end{itemize}
+
+\refskriptP{371} A Two-cycle DMA Transfer passes the data through the DMA Data Register.
+\refskriptP{372} A One-cycle DMA Transfer makes a Direct I/O – Memory path  transfer.
+
+MSP430 DMA Support \refskript{7.6.3}, DMA Transfer Modes \refskript{7.6.3.2}
+
+\section{Bootstrap \refskript{6.6}}
