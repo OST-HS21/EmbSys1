@@ -16,17 +16,21 @@
 \begin{minipage}{0.5\columnwidth}
 	\vspace{0pt}
 	\unitText{$V_{dd}$}{supply voltage}{\unit{V}}\\
-	\unitText{$V_T$}{threshold voltage}{\unit{V}}
+	\unitText{$V_T$}{threshold voltage}{\unit{V}}\\
 	\unitText{$\alpha$}{switching activity}{\unit{1}}\\
 	\unitText{$C_L$}{load capacity}{\unit{F}}\\
 	\unitText{$f$}{clock frequency}{\unit{Hz}}\\
-	\unitText{$\tau$}{Gate delay}{\unit{ms}}
+	\unitText{$\tau$}{Gate delay}{\unit{ms}}\\
 \end{minipage}
 \vspace{2mm}
 
 
 \subsection{Interrupts and Low-Power Modes}
 Low power modes are configured with the bits \textit{CPUOFF}, \textit{OSCOFF}, \textit{SCG0} and \textit{SCG1} in the \textbf{Status Register} (SR, also called R2).
+
+If a ISR should change the LP-Mode on exit, the function \lstinline[language=C]|__bic_SR_register_on_exit(0x00F0)| should be used as it changes the values of the SP which is saved in the Stack and therefore is applied on exit, while \lstinline[language=C]|__bic_SR_register()| only changes the current SR value which is overwritten on exit.
+See \refskript{Fig. 7.8}
+
 
 \subsection{CCS6 Intrinsic Functions for MSP430}
 \begin{lstlisting}[language=c]
@@ -41,17 +45,16 @@ Replace software with hardware peripherals.
 \subsection{RTC Interrupts}
 \begin{enumerate}
 	\itemsep-.5em 
-	\item Alarm
-	\item Interval Timer
-	\item Prescaler 0
-	\item Prescaler 1
-	\item Ready for Register operation
+	\item Alarm (RTCA)
+	\item Interval Timer (RTCTEV)
+	\item Prescaler 0 (RT0PS)
+	\item Prescaler 1 (RT1PS)
+	\item Ready for Register operation (RTCRDY)
 \end{enumerate}
 
 Example 1: Time Event
 \begin{lstlisting}[language=C]
-int main (void)
-{
+int main (void) {
 	WDTCTL = WDTPW | WDTHOLD;	//stop watchdog
 	//disable high-impedance ports
 	PM5CTL0 &= ~LOCKLPM5;
@@ -64,8 +67,7 @@ int main (void)
 	//Configure LFXT 32kHz crystal
 	CSCTL0_H = CSKEY >> 8;	//Unlock CS reg.
 	CSCTL4 &= ~LFXTOFF;			//Enable LFXT
-	do
-	{
+	do {
 		//Clear LFXT fault flag
 		CSCTL5 &= ~LFXTOFFG;
 		SFRIFG1 &= ~OFIFG;
@@ -90,8 +92,18 @@ int main (void)
 	//Enter LPM3 with interrupt enabled
 	__bis_SR_register(LPM3_bits + GIE);
 		
-	while (1)
-	{}
+	while (1) {}
+}
+
+#pragma vector=RTC_VECTOR
+__interrupt void rtc_ISR (void) {
+	//get the current interrupt vector value of the RTC
+	switch (RTCIV) {
+		case 0x00:
+		//No interrupt pending
+		break;
+		...
+	}
 }
 \end{lstlisting}
 

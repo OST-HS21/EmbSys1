@@ -10,14 +10,16 @@ There exist different types of Interrupts:
 
 \begin{lstlisting}[language=c]
 PxDIR &= ~0x01;	// Set Px.0 as input
+PxIES |=  0x01; // Select interrupt edge high-to-low
+PxIE  |=  0x01;	// Enable interrupt on SW1
+
 PxDIR |=  0x02;	// Set Px.1 as output
 PxOUT &= ~0x02;	// Clear LED on Px.1
-PxIE  |=  0x01;	// IRQ when SW1 is pressed
 ...
 __interrupt void portx_ISR(void) {
 	PxOUT ^=  0x02;
 }
-\end{lstlisting}\vspace{-25px}
+\end{lstlisting}\vspace{-20px}
 
 \subsection{Maskabe vs. Nonmaskable \refskript{7.1.2}}
 \textit{Maksable}: Can be blocked (masked), trough flags. Most common type of interrupt. Disabled upon RESET.
@@ -64,13 +66,13 @@ int main(void){
 static void _s1_callbackFct(void){
 	...
 }
-\end{lstlisting}\vspace{-25px}
+\end{lstlisting}\vspace{-20px}
 \begin{lstlisting}[language=c]
 // hal_gpio.h
 void hal_gpio_init(void);
 void hal_gpio_interruptCallbackFctRegister(
 			gpioPeripherie_t gpio, pFctHandler pCallbackFct);
-\end{lstlisting}\vspace{-25px}
+\end{lstlisting}\vspace{-20px}
 \begin{lstlisting}[language=c]
 // hal_gpio.c
 void hal_gpio_init(void) { // ... }
@@ -84,7 +86,7 @@ __interrupt void _port1_ISR(void) {
 	// ...
 	_hal_gpio_callbackFct[0](); // call back application code
 }
-\end{lstlisting}\vspace{-25px}
+\end{lstlisting}\vspace{-20px}
 
 
 

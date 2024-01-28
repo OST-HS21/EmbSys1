@@ -17,3 +17,22 @@ Resolution, precision: \formula{$\Delta = \dfrac{V_{max} - V_{min}}{2^n} = \dfra
 
 \subsection{Digital-to-Analog Converters \refskript{10.8}}
 \subsection{Analog-to-Digital Converters \refskript{10.9}}
+\begin{lstlisting}[language=C]
+uint16_t hal_adc_sampleAndGet(adcChannel_t channel) {
+	uint16_t result = 0x0000;
+	
+	// Disable ADC conversation (ENC-Bit)
+	ADC12CTL0 &= ~0x0002;
+	// reset conversion start address (bit4..0)
+	ADC12CTL3 &= ~0x001F;
+	// setup conversion start address (bit4..0)
+	ADC12CTL3 |= (uint16_t)channel;
+	// start sample and enable conversion
+	ADC12CTL0 |= 0x0003;
+	// wait while ADC-Unit is busy
+	while (ADC12CTL1 & 0x0001);
+	// read out result of memory0
+	result = ADC12MEM0;  
+	return result;
+}
+\end{lstlisting}

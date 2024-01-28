@@ -1,5 +1,16 @@
 \section{Timer \& Event Counters \refskript{7.4}}
 \includegraphics[width=\columnwidth]{"Images/TimerFuntionsweise.png"}
+\begin{lstlisting}[language=C]
+//************ TimerB0 configuration ************//
+TB0CTL |= 0x0004;   //clear timer (set TBCLR Bit)
+TB0CTL |= 0x0200;   //select SMCLK as inputClock
+TB0CCR0 = period;   //set period
+TB0CCTL2 = 0x00E0;  //set Output-Mode to Reset/Set
+TB0CCR2 = 0x0000;   //set a default duty cycle value
+\end{lstlisting}\vspace{-20px}
+
+
+\formula{$\text{Compare Register} = \text{cnt} \div \text{prescaler} - 1$}
 
 \subsection{Signature Timer Applications \refskript{7.4.3}}
 \textit{Watchdog timer} is secured through a password in the \textit{WDTCTL} register.
